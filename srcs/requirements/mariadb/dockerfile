@@ -15,7 +15,9 @@ RUN mkdir -p /var/run/mysqld && \
 COPY mariadb.cnf /etc/mysql/mariadb.conf
 COPY init.sh /tmp/init.sh
 
-RUN mkdir /run/mysql
-RUN chmod +x /tmp/init.sh && bash /tmp/init.sh
+RUN mkdir /run/mysql && \
+    service mysql start && \
+    chmod +x /tmp/init.sh && \
+    bash /tmp/init.sh
 
 CMD ["mysqld_safe"]

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sleep 10
+
 wp --allow-root config create \
 	--path=/var/www/html \
 	--dbname="$WP_DATABASE" \
@@ -15,7 +17,5 @@ wp core install --allow-root \
 	--admin_user=$WP_USER \
 	--admin_password=$WP_PASSWORD \
 	--admin_email=user@email.com
-
-echo "user: " $WP_USER
 
 php-fpm7.4 -F
