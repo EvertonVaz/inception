@@ -1,0 +1,24 @@
+FROM debian:oldstable
+
+ARG WP_DATABASE
+ARG WP_USER
+ARG WP_PASSWORD
+
+WORKDIR /var/www/html/
+
+RUN apt update -y && apt upgrade -y && \
+    apt install -y php-fpm php-mysqli php-mysql mariadb-client wget
+
+RUN wget -O /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+	&& chmod +x /usr/local/bin/wp \
+	&& wp core download --allow-root --path=/var/www/html
+
+COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY script.sh /tmp/script.sh
+
+RUN mkdir /run/php
+RUN chmod +x /tmp/script.sh
+RUN chown -R www-data:www-data /var/www/html \
+	&& chmod 755 /var/www/html
+
+CMD ["/tmp/script.sh"]

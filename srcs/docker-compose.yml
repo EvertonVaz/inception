@@ -1,0 +1,60 @@
+networks:
+  inception:
+
+services:
+  nginx:
+    container_name: nginx
+    build: requirements/nginx/.
+    restart: on-failure
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    volumes:
+      - ./web:/var/www/html
+    environment:
+      - WP_DATABASE=${WP_DATABASE}
+      - WP_USER=${WP_USER}
+      - WP_PASSWORD=${WP_PASSWORD}
+    depends_on:
+      - wordpress
+      - mariadb
+    restart: on-failure
+
+  wordpress:
+    container_name: wordpress
+    build: 
+      context: requirements/wordpress/
+      args:
+        - WP_DATABASE=${WP_DATABASE}
+        - WP_USER=${WP_USER}
+        - WP_PASSWORD=${WP_PASSWORD}
+    env_file:
+      - .env
+    depends_on:
+      - mariadb    
+    networks:
+      - inception
+    expose:
+      - 9000
+    volumes:
+      - ./web:/var/www/html
+    restart: on-failure
+    
+  mariadb:
+    container_name: mariadb
+    build: 
+      context: requirements/mariadb
+      args:
+        - WP_DATABASE=${WP_DATABASE}
+        - WP_USER=${WP_USER}
+        - WP_PASSWORD=${WP_PASSWORD}
+    environment:
+      - WP_DATABASE
+      - WP_USER
+      - WP_PASSWORD
+    env_file:
+      - .env
+    networks:
+      - inception
+    restart: on-failure
