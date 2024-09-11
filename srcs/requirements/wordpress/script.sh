@@ -1,12 +1,12 @@
 #!/bin/bash
 
-sleep 10
+wp core download --allow-root --path=/var/www/html
 
 wp --allow-root config create \
-	--path=/var/www/html \
 	--dbname="$WP_DATABASE" \
 	--dbuser="$WP_USER" \
 	--dbpass="$WP_PASSWORD" \
+	--path=/var/www/html \
 	--dbhost=mariadb \
 	--dbprefix="wp_"
 
