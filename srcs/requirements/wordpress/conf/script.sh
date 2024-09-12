@@ -14,8 +14,8 @@ wp core install --allow-root \
 	--path=/var/www/html \
 	--title="Inception" \
 	--url=egeraldo.42.fr \
-	--admin_user=$WP_USER \
-	--admin_password=$WP_PASSWORD \
+	--admin_user=$ADM_USER \
+	--admin_password=$ADM_PASS \
 	--admin_email=user@email.com
 
 php-fpm7.4 -F
