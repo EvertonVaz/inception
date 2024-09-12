@@ -1,5 +1,5 @@
 LOGIN=egeraldo
-VOLUMES_PATH=~/nave/inception/data
+VOLUMES_PATH=/home/$(LOGIN)/data
 
 export VOLUMES_PATH
 export LOGIN
@@ -17,16 +17,13 @@ host-clean:
 	sudo sed -i "/${LOGIN}.42.fr/d" /etc/hosts
 
 DOCKER_COMPOSE_FILE=./srcs/docker-compose.yml
-DOCKER_COMPOSE_COMMAND=docker compose -f $(DOCKER_COMPOSE_FILE)
+DOCKER_COMPOSE_COMMAND=docker-compose -f $(DOCKER_COMPOSE_FILE)
 
 up: build
 	$(DOCKER_COMPOSE_COMMAND) up -d
 
 build:
 	$(DOCKER_COMPOSE_COMMAND) build
-
-build-no-cache:
-	$(DOCKER_COMPOSE_COMMAND) build --no-cache
 
 down:
 	$(DOCKER_COMPOSE_COMMAND) down
@@ -52,35 +49,8 @@ fclean: clean
 	sudo rm -rf /home/${LOGIN}
 
 setup: host
-	sudo mkdir -p ${VOLUMES_PATH}/mariadb
-	sudo mkdir -p ${VOLUMES_PATH}/wordpress
+	sudo mkdir -p ${VOLUMES_PATH}/wp-database
+	sudo mkdir -p ${VOLUMES_PATH}/wp-pages
 
-prepare:	update compose
 
-update:
-	@echo "${YELLOW}-----Updating System----${NC}"
-	sudo apt -y update && sudo apt -y upgrade
-	@if [ $$? -eq 0 ]; then \
-		echo "${GREEN}-----System updated-----${NC}"; \
-		echo "${YELLOW}-----Installing Docker-----${NC}"; \
-		sudo apt -y install docker.io && sudo apt -y install docker-compose; \
-		if [ $$? -eq 0 ]; then \
-			echo "${GREEN}-----Docker and docker-compose installed-----${NC}"; \
-		else \
-			echo "${RED}-----Docker or docker-compose installation failed-----${NC}"; \
-		fi \
-	else \
-		echo "${RED}-----System update failed-----${NC}"; \
-	fi
-
-compose:
-	@echo "${YELLOW}-----Updating Docker Compose to V2-----${NC}"
-	sudo apt -y install curl
-	mkdir -p ${DOCKER_CONFIG}/cli-plugins
-	curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ${DOCKER_CONFIG}/cli-plugins/docker-compose
-	chmod +x ${DOCKER_CONFIG}/cli-plugins/docker-compose
-	sudo mkdir -p /usr/local/lib/docker/cli-plugins
-	sudo mv /home/${SYSTEM_USER}/.docker/cli-plugins/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose
-	@echo "${GREEN}-----Docker Compose updated-----${NC}"
-
-.PHONY: all up build build-no-cache down ps ls clean fclean setup host update compose prepare
+.PHONY: all up build build-no-cache down ps ls clean fclean setup host

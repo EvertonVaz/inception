@@ -6,15 +6,15 @@ ARG WP_PASSWORD
 
 WORKDIR /var/www/html/
 
-RUN apt update -y && apt upgrade -y && \
-    apt install -y php7.4 php-fpm php-mysql mariadb-client wget
+RUN apt-get update -y && apt-get upgrade -y && \
+    apt-get install -y php7.4 php-fpm php-mysql mariadb-client wget sendmail
 
 RUN wget -O /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& chmod +x /usr/local/bin/wp \
 	&& wp core download --allow-root --path=/var/www/html
 
-COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
-COPY script.sh /tmp/script.sh
+COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY ./conf/script.sh /tmp/script.sh
 
 RUN mkdir /run/php
 RUN chmod +x /tmp/script.sh

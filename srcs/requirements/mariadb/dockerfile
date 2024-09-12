@@ -1,4 +1,4 @@
-FROM debian:oldoldstable
+FROM debian:oldstable
 
 ARG WP_DATABASE
 ARG WP_USER
@@ -6,18 +6,16 @@ ARG WP_PASSWORD
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install mariadb-server -y
+    apt-get install mariadb-client mariadb-server -y
 
-RUN mkdir -p /var/run/mysqld && \
-    chown -R mysql:mysql /var/run/mysqld && \
-    chmod 777 /var/run/mysqld
+RUN mkdir -p /var/lib/mysql /var/run/mysqld && chmod -R 777 /var/run/mysqld
 
-COPY mariadb.cnf /etc/mysql/mariadb.conf
-COPY init.sh /tmp/init.sh
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./conf/init.sh /tmp/init.sh
 
-RUN mkdir /run/mysql && \
+RUN chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
     service mysql start && \
     chmod +x /tmp/init.sh && \
     bash /tmp/init.sh
 
-CMD ["mysqld_safe"]
+ENTRYPOINT ["mysqld_safe"]

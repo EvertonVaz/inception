@@ -1,7 +1,7 @@
 FROM debian:oldstable
 
-RUN apt update -y && apt upgrade -y && \
-    apt install nginx openssl -y
+RUN apt-get update -y && apt-get upgrade -y && \
+    apt-get install nginx openssl -y
 
 RUN openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 \
 	-keyout /etc/ssl/private/private.key \
@@ -10,7 +10,7 @@ RUN openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 \
 
 COPY ./conf/nginx.conf /etc/nginx/conf.d
 
-# RUN chmod 755 /var/www
-# RUN chown -R www-data:www-data /var/www
+RUN chmod 755 /var/www
+RUN chown -R www-data:www-data /var/www
 
 CMD ["nginx", "-g", "daemon off;"]

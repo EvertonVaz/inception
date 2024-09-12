@@ -1,5 +1,21 @@
 networks:
   inception:
+    driver: bridge
+    name: inception
+
+volumes:
+  wp-database:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/egeraldo/data/wp-database'
+  wp-pages:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/egeraldo/data/wp-pages'
 
 services:
   nginx:
@@ -17,7 +33,7 @@ services:
       - wordpress
       - mariadb
     volumes:
-      - ./web:/var/www/html
+      - wp-pages:/var/www/html
     restart: on-failure
 
   wordpress:
@@ -37,7 +53,7 @@ services:
     expose:
       - 9000
     volumes:
-      - ./web:/var/www/html
+      - wp-pages:/var/www/html
     restart: on-failure
 
   mariadb:
@@ -57,5 +73,7 @@ services:
     networks:
       - inception
     volumes:
-      - ./web:/var/www/html
+      - wp-database:/var/lib/mysql
+    expose:
+      - 3306
     restart: on-failure
