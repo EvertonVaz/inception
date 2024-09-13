@@ -4,9 +4,6 @@ VOLUMES_PATH=/home/$(LOGIN)/data
 export VOLUMES_PATH
 export LOGIN
 
-SYSTEM_USER = $(shell echo $$USER)
-DOCKER_CONFIG = $(shell echo $$HOME/.docker)
-
 all: setup up
 
 host:
@@ -51,6 +48,8 @@ fclean: clean
 setup: host
 	sudo mkdir -p ${VOLUMES_PATH}/wp-database
 	sudo mkdir -p ${VOLUMES_PATH}/wp-pages
+	sudo chmod 777 ${VOLUMES_PATH}/wp-database
+	sudo chmod 777 ${VOLUMES_PATH}/wp-pages
 
 
 .PHONY: all up build build-no-cache down ps ls clean fclean setup host

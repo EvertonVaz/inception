@@ -14,7 +14,6 @@ COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY ./conf/init.sh /tmp/init.sh
 
 RUN chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
-    service mysql start && \
     chmod +x /tmp/init.sh && \
     bash /tmp/init.sh
 
