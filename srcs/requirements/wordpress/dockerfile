@@ -14,6 +14,7 @@ RUN wget -O /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh
 	&& wp core download --allow-root --path=/var/www/html
 
 COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY ./conf/php.ini /etc/php/7.4/fpm/php.ini
 COPY ./conf/script.sh /tmp/script.sh
 
 RUN mkdir /run/php

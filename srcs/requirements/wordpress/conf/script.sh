@@ -18,4 +18,8 @@ wp core install --allow-root \
 	--admin_password=$ADM_PASS \
 	--admin_email=user@email.com
 
+wp config set WP_DEBUG true --raw --allow-root --path=/var/www/html
+wp config set WP_DEBUG_LOG true --raw --allow-root --path=/var/www/html
+wp config set WP_DEBUG_DISPLAY false --raw --allow-root --path=/var/www/html
+
 php-fpm7.4 -F

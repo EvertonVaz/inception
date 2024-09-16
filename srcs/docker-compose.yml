@@ -34,7 +34,13 @@ services:
       - mariadb
     volumes:
       - wp-pages:/var/www/html
+      - ./logs/nginx:/var/log/nginx 
     restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
 
   wordpress:
     container_name: wordpress
@@ -55,6 +61,11 @@ services:
     volumes:
       - wp-pages:/var/www/html
     restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
 
   mariadb:
     container_name: mariadb
@@ -77,3 +88,8 @@ services:
     expose:
       - 3306
     restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"

@@ -14,7 +14,7 @@ host-clean:
 	sudo sed -i "/${LOGIN}.42.fr/d" /etc/hosts
 
 DOCKER_COMPOSE_FILE=./srcs/docker-compose.yml
-DOCKER_COMPOSE_COMMAND=docker-compose -f $(DOCKER_COMPOSE_FILE)
+DOCKER_COMPOSE_COMMAND=docker compose -f $(DOCKER_COMPOSE_FILE)
 
 up: build
 	$(DOCKER_COMPOSE_COMMAND) up -d
