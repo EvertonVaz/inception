@@ -14,7 +14,7 @@ host-clean:
 	sudo sed -i "/${LOGIN}.42.fr/d" /etc/hosts
 
 DOCKER_COMPOSE_FILE=./srcs/docker-compose.yml
-DOCKER_COMPOSE_COMMAND=docker compose -f $(DOCKER_COMPOSE_FILE)
+DOCKER_COMPOSE_COMMAND=docker-compose -f $(DOCKER_COMPOSE_FILE)
 
 up: build
 	$(DOCKER_COMPOSE_COMMAND) up -d
@@ -31,6 +31,7 @@ ps:
 ls:
 	docker volume ls
 
+
 clean: host-clean
 	$(DOCKER_COMPOSE_COMMAND) down --rmi all --volumes
 
@@ -44,6 +45,7 @@ reset:
 fclean: clean
 	docker system prune --force --all --volumes
 	sudo rm -rf /home/${LOGIN}
+	sudo rm -rf ./srcs/logs/
 
 setup: host
 	sudo mkdir -p ${VOLUMES_PATH}/wp-database
@@ -53,3 +55,9 @@ setup: host
 
 
 .PHONY: all up build build-no-cache down ps ls clean fclean setup host
+
+#Commands for mariadb
+#docker exec -it mariadb /bin/bash
+#mariadb -u $WP_USER -p$WP_PASSWORD $WP_DATABASE
+#SHOW TABLES;
+#SELECT * FROM {table}

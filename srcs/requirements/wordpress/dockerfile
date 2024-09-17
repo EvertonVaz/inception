@@ -7,7 +7,7 @@ ARG WP_PASSWORD
 WORKDIR /var/www/html/
 
 RUN apt-get update -y && apt-get upgrade -y && \
-    apt-get install -y php7.4 php-fpm php-mysql mariadb-client wget sendmail
+    apt-get install -y php7.4 php-fpm php-mysql mariadb-client wget
 
 RUN wget -O /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& chmod +x /usr/local/bin/wp \

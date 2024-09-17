@@ -21,5 +21,7 @@ wp core install --allow-root \
 wp config set WP_DEBUG true --raw --allow-root --path=/var/www/html
 wp config set WP_DEBUG_LOG true --raw --allow-root --path=/var/www/html
 wp config set WP_DEBUG_DISPLAY false --raw --allow-root --path=/var/www/html
+wp config set DISABLE_WP_CRON true --raw --allow-root --path=/var/www/html
+
 
 php-fpm7.4 -F
